@@ -1,11 +1,12 @@
-[{"question": "Which style of burger would you like?",
+[{
+    "question": "Which style of burger would you like?",
     "answers": [{
             "title": "Standert",
-            "url": "./image/burger.png"
+            "url": "../image/burger.png"
         },
         {
             "title": "Black-Style",
-            "url": "./image/burgerBlack.png"
+            "url": "../image/burgerBlack.png"
         }
     ],
     "type": "radio"
@@ -14,15 +15,15 @@
     "question": "What meat is the cutlet made from?",
     "answers": [{
             "title": "Chicken",
-            "url": "./image/chickenMeat.png"
+            "url": "../image/chickenMeat.png"
         },
         {
             "title": "Beef",
-            "url": "./image/beefMeat.png"
+            "url": "../image/beefMeat.png"
         },
         {
             "title": "Pork",
-            "url": "./image/porkMeat.png"
+            "url": "../image/porkMeat.png"
         }
     ],
     "type": "radio"
@@ -31,19 +32,19 @@
     "question": "Additional ingredients?",
     "answers": [{
             "title": "A tomato",
-            "url": "./image/tomato.png"
+            "url": "../image/tomato.png"
         },
         {
             "title": "Cucumber",
-            "url": "./image/cucumber.png"
+            "url": "../image/cucumber.png"
         },
         {
             "title": "Salad",
-            "url": "./image/salad.png"
+            "url": "../image/salad.png"
         },
         {
             "title": "Onion",
-            "url": "./image/onion.png"
+            "url": "../image/onion.png"
         }
     ],
     "type": "checkbox"
@@ -52,15 +53,15 @@
     "question": "Add sauce?",
     "answers": [{
             "title": "Garlic sauce",
-            "url": "./image/sauce1.png"
+            "url": "../image/sauce1.png"
         },
         {
             "title": "Tomato sauce",
-            "url": "./image/sauce2.png"
+            "url": "../image/sauce2.png"
         },
         {
             "title": "Mustard sauce",
-            "url": "./image/sauce3.png"
+            "url": "../image/sauce3.png"
         }
     ],
     "type": "radio"
