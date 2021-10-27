@@ -56,6 +56,12 @@ label span {
     margin-top: 9px;
 }
 
+.phone-input {
+    border: 1px solid #b9b3b3;
+    height: 2em;
+    display: block;
+}
+
 .content {
     width: 300px;
     height: 300px;

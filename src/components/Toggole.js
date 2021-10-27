@@ -12,8 +12,10 @@ class Toggole extends Component {
             finalAnswers: [],
             numberQuestion: 0,
             title: '',
+            finishLable: false,
         }
-    }    
+    }   
+    
 
     btmNext = () => {
         const nextIndex = this.state.numberQuestion + 1
@@ -30,13 +32,37 @@ class Toggole extends Component {
         })
     }
 
-        
+    send = () => {
+        this.setState({
+            finishLable: true,
+        })
+    }
+
+
+    
+    
 
     render() {
         const title = questions[this.state.numberQuestion].question;
-        const answers = questions[this.state.numberQuestion].answers;
-        const renderQuestions = this.state.numberQuestion >= 0 && this.state.numberQuestion <= questions.length - 1 && <QuestionBlock title={title} answers={answers}/>    
-       
+        let phone = false;
+        let btnPrev = null; 
+        let btnSend = null; 
+        let btnNext = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="next" onClick={this.btmNext}>Next</button>;
+        const answers = questions[this.state.numberQuestion].answers;           
+        
+        if (this.state.numberQuestion > 0) {
+            btnPrev = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="prev" onClick={this.btmPrev}>Prev</button>
+        } else {
+            btnPrev = null
+        }
+        
+        if (this.state.numberQuestion === questions.length - 1) {
+            btnPrev = null;
+            btnNext = null;
+            phone = true;
+            btnSend = <button type="button" className="btn btn-primary sendBtn" id="send" onClick={this.send}>Send</button>
+        }
+        const renderQuestions = this.state.numberQuestion >= 0 && this.state.numberQuestion <= questions.length && <QuestionBlock title={title} answers={answers} phone={phone} finishLable={this.state.finishLable} toggleStatus={this.props.toggleStatus}/> 
         
         return (
             <div className="modal d-block" tabindex="-1" role="dialog" id="modal-block" >
@@ -58,9 +84,9 @@ class Toggole extends Component {
                         {renderQuestions}
 
                         <div className="modal-footer" id="modalFooter">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" id="prev" onClick={this.btmPrev}>Prev</button>
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" id="next" onClick={this.btmNext}>Next</button>
-                            <button type="button" className="btn btn-primary sendBtn d-none" id="send">Send</button>
+                            {btnPrev}
+                            {btnNext}
+                            {btnSend}
                         </div>
                     </div>
                 </div>
