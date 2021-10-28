@@ -76,6 +76,13 @@ label span {
 .modal {
     background: rgba(0, 0, 0, 0.5);
 }
+.totalOrder{
+    text-align: center;
+}
+
+.totalOrder p {
+    margin: 0;
+}
 
 .modal-content {
     background: #E0FFFF;

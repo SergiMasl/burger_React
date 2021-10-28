@@ -1,73 +1,91 @@
 [{
     "question": "Which style of burger would you like?",
-    "ingredientType": "typeOfBurg",
     "answers": [{
             "title": "Standert",
-            "url": "../image/burger.png"
+            "url": "../image/burger.png",
+            "name": "Standert",
+            "price": "1.99"
         },
         {
             "title": "Black-Style",
             "url": "../image/burgerBlack.png",
-            "isSelected": false
+            "name": "Black-Style",
+            "price": "2.99"
         }
     ],
     "type": "radio"
 },
 {
     "question": "What meat is the cutlet made from?",
-    "ingredientType": "meat",
     "answers": [{
             "title": "Chicken",
-            "url": "../image/chickenMeat.png"
+            "url": "../image/chickenMeat.png",
+            "name": "Chicken",
+            "price": "2.99"
         },
         {
             "title": "Beef",
-            "url": "../image/beefMeat.png"
+            "url": "../image/beefMeat.png",
+            "name": "Beef",
+            "price": "3.99"
         },
         {
             "title": "Pork",
-            "url": "../image/porkMeat.png"
+            "url": "../image/porkMeat.png",
+            "name": "Pork",
+            "price": "3.99"
         }
     ],
     "type": "radio"
 },
 {
     "question": "Additional ingredients?",
-    "ingredientType": "veg",
     "answers": [{
             "title": "A tomato",
             "url": "../image/tomato.png",
-            "isSelected": false
+            "name": "Tomato",
+            "price": "0.99"
         },
         {
             "title": "Cucumber",
-            "url": "../image/cucumber.png"
+            "url": "../image/cucumber.png",
+            "name": "Cucumber",
+            "price": "0.99"
         },
         {
             "title": "Salad",
-            "url": "../image/salad.png"
+            "url": "../image/salad.png",
+            "name": "Salad",
+            "price": "0.99"
         },
         {
             "title": "Onion",
-            "url": "../image/onion.png"
+            "url": "../image/onion.png",
+            "name": "Onion",
+            "price": "0.99"
         }
     ],
     "type": "checkbox"
 },
 {
     "question": "Add sauce?",
-    "ingredientType": "sauce",
     "answers": [{
             "title": "Garlic sauce",
-            "url": "../image/sauce1.png"
+            "url": "../image/sauce1.png",
+            "name": "Garlic_sauce",
+            "price": "0.99"
         },
         {
             "title": "Tomato sauce",
-            "url": "../image/sauce2.png"
+            "url": "../image/sauce2.png",
+            "name": "Tomato_sauce",
+            "price": "0.99"
         },
         {
             "title": "Mustard sauce",
-            "url": "../image/sauce3.png"
+            "url": "../image/sauce3.png",
+            "name": "Mustard_sauce",
+            "price": "0.99"
         }
     ],
     "type": "radio"

@@ -3,7 +3,6 @@ import questions from '../questions.json';
 import QuestionBlock from './QuestionBlock.js';
 
 
-
 class Toggole extends Component {
     constructor() {
         super();
@@ -13,11 +12,22 @@ class Toggole extends Component {
             currentIndex: 0,
             title: '',
             finishLable: false,
-            typeOfBurg: '',
-            meat: '',
-            veg: '',
-            sauce: '',
-            questins: [...questions]
+            phone: '',
+            values: {
+                "Standert": false,
+                "Black-Style": false,
+                "Chicken": false,
+                "Beef": false,
+                "Pork": false,
+                "Tomato": false,
+                "Cucumber": false,
+                "Salad": false,
+                "Onion": false,
+                "Garlic_sauce": false,
+                "Tomato_sauce": false,
+                "Mustard_sauce": false,
+            },
+            totalNames: ["Standert", "Chicken", "Tomato", "Salad", "Garlic_sauce"],
         }
     }   
     
@@ -37,30 +47,45 @@ class Toggole extends Component {
         })
     }
 
-    send = () => {
-        
-        this.btmNext();
+    checkPhone = (e) => {
+        this.setState({
+            phone: e
+        })
+    }
 
+    send = () => {
+        this.btmNext();
         this.setState({
             finishLable: true,
         })
     }
 
-    saveOrder = (type, value) => {
+    handleOrder = (newValues) => {
+        this.setState({
+            values: {
+                ...this.state.values, 
+                ...newValues
+            } 
+        })
+    }
 
+    checkOrder = () => {
+        let results = []
+        for (let elem in this.state.values) {
+            this.state.values[elem] === true && results.push(elem)     
+        }
         // this.setState({
-        //     [type]: value,
-        // })
-        // console.log(this.state)
+        //     totalNames: results,
+        // }) 
+
     }
 
     render() {
-
+        console.log(this.state);
         let propIndex = this.state.currentIndex
         let currentQuestion = questions[propIndex];
 
         const answers = currentQuestion.answers;           
-        let ingredientType = currentQuestion.ingredientType;;
         const title = currentQuestion.question;
         let type = currentQuestion.type;
 
@@ -95,7 +120,11 @@ class Toggole extends Component {
                     finishLable={this.state.finishLable} 
                     toggleStatus={this.props.toggleStatus}
                     type={type}
-                    saveOrder={this.saveOrder}
+                    handleOrder={this.handleOrder}
+                    checkPhone={this.checkPhone}
+                    values={this.state.values}
+                    checkOrder={this.checkOrder}
+                    totalNames={this.state.totalNames}
                     /> 
                     
         return (

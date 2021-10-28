@@ -1,36 +1,61 @@
 import React from 'react';
 
 
-function QuestionBlock( props ) {
 
-    const checkPhoneTrue = () => {
-        console.log('ss')
+
+function QuestionBlock( props ) {
+    
+    
+    const onChange = (name, checked, type) => {
+        if (type === 'radio')
+            {
+                const resultValues = {};
+                props.currentQuestion.answers.forEach((item) => {
+                if (item.name === name) {
+                    resultValues[item.name] = checked
+                } else {
+                    resultValues[item.name] = !checked
+                } 
+            })
+            console.log(resultValues)
+            return props.handleOrder(resultValues)
+        } else {
+
+            props.handleOrder({[name]: checked})
+            
+        }
+
     }
 
     let phoneBlock = null;
     let finishBlock = null;
     
     if (props.phone ) {    
+        props.checkOrder()
     phoneBlock = 
         <div> 
             <lable for='numberPhone'>Enter yor phone</lable>
-            <input type='phone' class='phone-input' onClick={checkPhoneTrue}/>
+            <input type="number" class='phone-input' onChange={(e)=> props.checkPhone(e.target.value)}/>    
+            <div className="totalOrder"><span>Your order:</span>{props.totalNames.map((arg) => <p>{arg}</p>)} </div>
         </div> 
     }
+    console.log(props.totalNames)
 
     let result = props.currentQuestion.answers.map((arg) => {
+       // console.log(this.props.value)
         return(
             <div className='answerText' key={arg.title}>
                 <input 
                     type={props.currentQuestion.type} 
                     id={arg.title} name="answer" 
                     className='d-none' 
-                    checked={arg.isSelected} 
+                    checked={props.values[arg.name]} 
                     id={arg.title} 
-                    onChange={ (e) => {props.saveOrder(props.currentQuestion.ingredientType, e.target.value)} }/>
+                    onChange={ (e) => {onChange(arg.name, e.target.checked, props.currentQuestion.type)} }/>
                 <label htmlFor={arg.title} class="d-flex flex-column justify-content-between">
                     <img class="answerImg" src={arg.url} alt="burger" />
                     <span>{arg.title}</span>
+                    <span>{arg.price}</span>
                 </label>
             </div>
         )
