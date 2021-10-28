@@ -32,14 +32,18 @@ function QuestionBlock( props ) {
     
     if (props.phone ) {    
         props.checkOrder()
+        props.totalCost()
     phoneBlock = 
         <div> 
             <lable for='numberPhone'>Enter yor phone</lable>
             <input type="number" class='phone-input' onChange={(e)=> props.checkPhone(e.target.value)}/>    
-            <div className="totalOrder"><span>Your order:</span>{props.totalNames.map((arg) => <p>{arg}</p>)} </div>
+            <div className="totalOrder">
+                <span>Your order:</span>
+                {props.totalNames.map((arg) => <p>{arg}</p>)} 
+                <span>$ {props.finalCost}</span>
+            </div>
         </div> 
     }
-    console.log(props.totalNames)
 
     let result = props.currentQuestion.answers.map((arg) => {
        // console.log(this.props.value)

@@ -28,6 +28,7 @@ class Toggole extends Component {
                 "Mustard_sauce": false,
             },
             totalNames: ["Standert", "Chicken", "Tomato", "Salad", "Garlic_sauce"],
+            finalCost: 0,
         }
     }   
     
@@ -77,11 +78,26 @@ class Toggole extends Component {
         // this.setState({
         //     totalNames: results,
         // }) 
+    }
 
+    totalCost = () => {
+        let preCost = 0
+        this.state.totalNames.map((arg) => {
+             questions.map((arg2) =>{
+                arg2.answers.map((arg3) =>{
+                    if (arg === arg3.name){
+                        preCost = preCost + +arg3.price
+                    }
+                })
+             })
+        })
+        // this.setState({
+        //     finalCost: preCost,
+        // })
     }
 
     render() {
-        console.log(this.state);
+        //console.log(this.state);
         let propIndex = this.state.currentIndex
         let currentQuestion = questions[propIndex];
 
@@ -125,6 +141,8 @@ class Toggole extends Component {
                     values={this.state.values}
                     checkOrder={this.checkOrder}
                     totalNames={this.state.totalNames}
+                    totalCost={this.totalCost}
+                    finalCost={this.state.finalCost}
                     /> 
                     
         return (
