@@ -13,24 +13,23 @@ class Toggole extends Component {
             title: '',
             finishLable: false,
             phone: '',
-            values: {
-                "Standert": false,
-                "Black-Style": false,
-                "Chicken": false,
-                "Beef": false,
-                "Pork": false,
-                "Tomato": false,
-                "Cucumber": false,
-                "Salad": false,
-                "Onion": false,
-                "Garlic_sauce": false,
-                "Tomato_sauce": false,
-                "Mustard_sauce": false,
-            },
+            values: {},
             totalNames: ["Standert", "Chicken", "Tomato", "Salad", "Garlic_sauce"],
             finalCost: 0,
         }
-    }   
+    }  
+    
+    componentDidMount() {
+        let valuesForState = {}
+        questions.forEach((item) => { 
+            item.answers.map((arg) => {
+                valuesForState[arg.name] = false
+            })    
+        })
+        this.setState({
+            values: valuesForState,
+        })
+    }
     
 
     btmNext = () => {
@@ -97,7 +96,7 @@ class Toggole extends Component {
     }
 
     render() {
-        //console.log(this.state);
+        console.log(this.state);
         let propIndex = this.state.currentIndex
         let currentQuestion = questions[propIndex];
 
