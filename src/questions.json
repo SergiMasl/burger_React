@@ -70,5 +70,9 @@
     "question": "Phone?",
     "answers": [],
     "comment": ["This is last obj, If you need more questions, add it upper"]
+},
+{
+    "question": "",
+    "answers": []
 }
 ]

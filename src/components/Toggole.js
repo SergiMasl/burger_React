@@ -33,17 +33,17 @@ class Toggole extends Component {
     }
 
     send = () => {
+        this.btmNext();
+
         this.setState({
             finishLable: true,
         })
     }
 
-
-    
-    
-
     render() {
+
         const title = questions[this.state.numberQuestion].question;
+        let type = questions[this.state.numberQuestion].type;
         let phone = false;
         let btnPrev = null; 
         let btnSend = null; 
@@ -56,14 +56,31 @@ class Toggole extends Component {
             btnPrev = null
         }
         
-        if (this.state.numberQuestion === questions.length - 1) {
+        if (this.state.numberQuestion === questions.length - 2) {
             btnPrev = null;
             btnNext = null;
             phone = true;
             btnSend = <button type="button" className="btn btn-primary sendBtn" id="send" onClick={this.send}>Send</button>
         }
-        const renderQuestions = this.state.numberQuestion >= 0 && this.state.numberQuestion <= questions.length && <QuestionBlock title={title} answers={answers} phone={phone} finishLable={this.state.finishLable} toggleStatus={this.props.toggleStatus}/> 
         
+        if (this.state.numberQuestion === questions.length - 1) {
+            phone = null;
+            btnSend = null;
+            btnPrev = null;
+            btnNext = null;
+        }
+
+        const renderQuestions = this.state.numberQuestion >= 0 
+            && this.state.numberQuestion <= questions.length 
+            && <QuestionBlock 
+                    title={title} 
+                    answers={answers} 
+                    phone={phone} 
+                    finishLable={this.state.finishLable} 
+                    toggleStatus={this.props.toggleStatus}
+                    type={type}
+                    /> 
+                    
         return (
             <div className="modal d-block" tabindex="-1" role="dialog" id="modal-block" >
                 <div className="modal-dialog  modal-dialog-centered" role="document">

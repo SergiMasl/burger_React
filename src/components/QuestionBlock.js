@@ -18,24 +18,28 @@ function QuestionBlock( props ) {
         </div> 
     }
 
-    if (props.finishLable) {
-        finishBlock = <p>"Thank You! We will contact you."</p>
-        this.props.toggleStatus = true
-    } 
-
-   
-    const result = props.answers.map((arg) => {
+    let result = props.answers.map((arg) => {
         return(
-            <div>
-                <input type="${questions[arg].type}" id="${answer.title}" name="answer" class="d-none" value='${answer.title}' />
-                <label for="{answer.title}" class="d-flex flex-column justify-content-between">
+            <div className='answerText'>
+                <input type={props.type} id={arg.title} name="answer" className='d-none' value={arg.title} id={arg.title} key={new Date()}/>
+                <label for={arg.title} class="d-flex flex-column justify-content-between">
                     <img class="answerImg" src={arg.url} alt="burger" />
                     <span>{arg.title}</span>
                 </label>
             </div>
         )
     })
-    
+
+    if (props.finishLable) {
+        phoneBlock = null
+        result = null
+        finishBlock = <p>"Thank You! We will contact you."</p>
+
+        
+        //props.toggleStatus = true
+        console.log(props.toggleStatus  )
+    } 
+
     return (
         <div className="modal-body  d-flex flex-column align-items-center" id="modalBody">
             <h5 className="question p-1 p-sm-2 p-md-3 text-center" id="question">{props.title}</h5>

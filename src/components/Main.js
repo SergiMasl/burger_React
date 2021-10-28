@@ -19,24 +19,23 @@ class Main extends Component {
         }) 
     }
 
+    toggleStatus = () => {
+        setTimeout(() => {
+            this.setStatus({
+                status: false,
+            })
+        }, 3000)
+    }
+
 
     render() {
-        let  toggleStatus = false;
-
-        if (toggleStatus) {
-            setTimeout(() => {
-                this.setStatus({
-                    status: false,
-                })
-            }, 5000)
-        }
 
 
       
         return (
             <div>
                 <MainInner toggle={this.toggle}/>
-                { this.state.status && <Toggole toggle={this.toggle} toggleStatus={toggleStatus}/> }          
+                { this.state.status && <Toggole toggle={this.toggle} toggleStatus={this.toggleStatus}/> }          
             </div>
         )
     }
