@@ -18,11 +18,17 @@ function QuestionBlock( props ) {
         </div> 
     }
 
-    let result = props.answers.map((arg) => {
+    let result = props.currentQuestion.answers.map((arg) => {
         return(
-            <div className='answerText'>
-                <input type={props.type} id={arg.title} name="answer" className='d-none' value={arg.title} id={arg.title} key={new Date()}/>
-                <label for={arg.title} class="d-flex flex-column justify-content-between">
+            <div className='answerText' key={arg.title}>
+                <input 
+                    type={props.currentQuestion.type} 
+                    id={arg.title} name="answer" 
+                    className='d-none' 
+                    checked={arg.isSelected} 
+                    id={arg.title} 
+                    onChange={ (e) => {props.saveOrder(props.currentQuestion.ingredientType, e.target.value)} }/>
+                <label htmlFor={arg.title} class="d-flex flex-column justify-content-between">
                     <img class="answerImg" src={arg.url} alt="burger" />
                     <span>{arg.title}</span>
                 </label>
@@ -34,10 +40,9 @@ function QuestionBlock( props ) {
         phoneBlock = null
         result = null
         finishBlock = <p>"Thank You! We will contact you."</p>
-
         
-        //props.toggleStatus = true
-        console.log(props.toggleStatus  )
+        props.toggleStatus()
+        
     } 
 
     return (

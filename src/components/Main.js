@@ -21,17 +21,15 @@ class Main extends Component {
 
     toggleStatus = () => {
         setTimeout(() => {
-            this.setStatus({
+            this.setState({
                 status: false,
             })
-        }, 3000)
+        }, 2000)
     }
 
 
     render() {
 
-
-      
         return (
             <div>
                 <MainInner toggle={this.toggle}/>

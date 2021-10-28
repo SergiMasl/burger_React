@@ -10,29 +10,35 @@ class Toggole extends Component {
         this.state = {
             status: false,
             finalAnswers: [],
-            numberQuestion: 0,
+            currentIndex: 0,
             title: '',
             finishLable: false,
+            typeOfBurg: '',
+            meat: '',
+            veg: '',
+            sauce: '',
+            questins: [...questions]
         }
     }   
     
 
     btmNext = () => {
-        const nextIndex = this.state.numberQuestion + 1
+        const nextIndex = this.state.currentIndex + 1
         
         this.setState({
-            numberQuestion: nextIndex, 
+            currentIndex: nextIndex, 
         })
     }
 
     btmPrev = () => {
-        const prevIndex = this.state.numberQuestion - 1
+        const prevIndex = this.state.currentIndex - 1
         this.setState({
-            numberQuestion: prevIndex,
+            currentIndex: prevIndex,
         })
     }
 
     send = () => {
+        
         this.btmNext();
 
         this.setState({
@@ -40,45 +46,56 @@ class Toggole extends Component {
         })
     }
 
+    saveOrder = (type, value) => {
+
+        // this.setState({
+        //     [type]: value,
+        // })
+        // console.log(this.state)
+    }
+
     render() {
 
-        const title = questions[this.state.numberQuestion].question;
-        let type = questions[this.state.numberQuestion].type;
+        let propIndex = this.state.currentIndex
+        let currentQuestion = questions[propIndex];
+
+        const answers = currentQuestion.answers;           
+        let ingredientType = currentQuestion.ingredientType;;
+        const title = currentQuestion.question;
+        let type = currentQuestion.type;
+
         let phone = false;
         let btnPrev = null; 
         let btnSend = null; 
-        let btnNext = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="next" onClick={this.btmNext}>Next</button>;
-        const answers = questions[this.state.numberQuestion].answers;           
-        
-        if (this.state.numberQuestion > 0) {
+        let btnNext = null;
+
+        propIndex === 0 || propIndex < questions.length - 2 ?
+            btnNext = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="next" onClick={this.btmNext}>Next</button>
+            : btnNext = null
+
+            propIndex > 0 && propIndex < questions.length - 2 ?
             btnPrev = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="prev" onClick={this.btmPrev}>Prev</button>
-        } else {
-            btnPrev = null
-        }
+            : btnPrev = null
         
-        if (this.state.numberQuestion === questions.length - 2) {
-            btnPrev = null;
-            btnNext = null;
+        if (propIndex === questions.length - 2) {
             phone = true;
             btnSend = <button type="button" className="btn btn-primary sendBtn" id="send" onClick={this.send}>Send</button>
         }
         
-        if (this.state.numberQuestion === questions.length - 1) {
+        if (propIndex === questions.length - 1) {
             phone = null;
             btnSend = null;
-            btnPrev = null;
-            btnNext = null;
         }
 
-        const renderQuestions = this.state.numberQuestion >= 0 
-            && this.state.numberQuestion <= questions.length 
+        const renderQuestions = propIndex >= 0 
+            && propIndex <= questions.length 
             && <QuestionBlock 
-                    title={title} 
-                    answers={answers} 
+                    currentQuestion={currentQuestion} 
                     phone={phone} 
                     finishLable={this.state.finishLable} 
                     toggleStatus={this.props.toggleStatus}
                     type={type}
+                    saveOrder={this.saveOrder}
                     /> 
                     
         return (
