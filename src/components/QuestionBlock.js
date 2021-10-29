@@ -40,7 +40,7 @@ function QuestionBlock( props ) {
             <div className="totalOrder">
                 <span>Your order:</span>
                 {props.totalNames.map((arg) => <p>{arg}</p>)} 
-                <span>$ {props.finalCost}</span>
+                <span>Total: $ {props.finalCost}</span>
             </div>
         </div> 
     }

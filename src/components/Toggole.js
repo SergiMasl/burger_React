@@ -14,8 +14,8 @@ class Toggole extends Component {
             finishLable: false,
             phone: '',
             values: {},
-            totalNames: ["Standert", "Chicken", "Tomato", "Salad", "Garlic_sauce"],
-            finalCost: 0,
+            totalNames: ["Standert", "Chicken", "Tomato", "Salad", "Garlic_sauce"],  //нужно получить из checkOrder
+            finalCost: 0,  //нужно получить из totalCost
         }
     }  
     
@@ -53,7 +53,35 @@ class Toggole extends Component {
         })
     }
 
+    sendOrder = () => {
+        const order = [];
+        order.push({client: [this.state.phone]}, {ingredients: [this.state.totalNames]}, {cost: [this.state.finalCost]})
+        //console.log(order)
+        console.log('dd')
+        fetch("http://localhost:5000/ ", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(order)
+        })
+        .then((response) => {
+            if (response.ok) {
+                alert('success', 'Your order is in work')
+                return response.json();
+            } else {
+                alert('error', `${response.status}: ${response.statusText}`)
+            }
+        })
+        .catch(error => {
+            console.dir(error)
+        })
+
+    }
+
     send = () => {
+        this.sendOrder()
+    
         this.btmNext();
         this.setState({
             finishLable: true,
@@ -83,15 +111,16 @@ class Toggole extends Component {
         let preCost = 0
         this.state.totalNames.map((arg) => {
              questions.map((arg2) =>{
-                arg2.answers.map((arg3) =>{
+                arg2.answers.map((arg3) => {
                     if (arg === arg3.name){
                         preCost = preCost + +arg3.price
                     }
                 })
              })
         })
+        console.log(preCost.toFixed(2))
         // this.setState({
-        //     finalCost: preCost,
+        //     finalCost: preCostto.Fixed(2),
         // })
     }
 
