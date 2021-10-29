@@ -1,34 +1,56 @@
 import React, { Component } from 'react';
-import questions from '../questions.json';
 import QuestionBlock from './QuestionBlock.js';
+import Phone from './Phone.js'
+import FinalBlock from './FinalBlock.js'
+
 
 
 class Toggole extends Component {
     constructor() {
         super();
         this.state = {
+            questions: [],
             status: false,
             finalAnswers: [],
             currentIndex: 0,
             title: '',
-            finishLable: false,
             phone: '',
             values: {},
-            totalNames: ["Standert", "Chicken", "Tomato", "Salad", "Garlic_sauce"],  //нужно получить из checkOrder
-            finalCost: 0,  //нужно получить из totalCost
         }
     }  
     
     componentDidMount() {
-        let valuesForState = {}
-        questions.forEach((item) => { 
-            item.answers.map((arg) => {
-                valuesForState[arg.name] = false
-            })    
+
+        fetch('http://localhost:5000/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
         })
-        this.setState({
-            values: valuesForState,
+        .then((response) => {
+            if (response.ok) { 
+                return response.json();
+            } else {
+                throw new Error(response.statusText);
+            }
         })
+        .then((data)=>{
+            let valuesForState = {}
+            data.forEach((item) => { 
+                item.answers.forEach((arg) => {
+                    valuesForState[arg.name] = false
+                })    
+            })
+            this.setState({
+                questions: data,
+                values: valuesForState,
+            })
+        })
+        .catch((error)=> {
+            console.dir(error)
+            alert('error', error)
+        })
+        
     }
     
 
@@ -55,10 +77,13 @@ class Toggole extends Component {
 
     sendOrder = () => {
         const order = [];
-        order.push({client: [this.state.phone]}, {ingredients: [this.state.totalNames]}, {cost: [this.state.finalCost]})
-        //console.log(order)
-        console.log('dd')
-        fetch("http://localhost:5000/ ", {
+        const ingr = this.checkOrder()
+        order.push({client: [this.state.phone]}, 
+            {ingredients: ingr}, 
+            {cost: this.totalCost(ingr)},
+        );
+
+        fetch("http://localhost:5000/", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -67,7 +92,7 @@ class Toggole extends Component {
         })
         .then((response) => {
             if (response.ok) {
-                alert('success', 'Your order is in work')
+                console.log('success', 'Your order is complite')
                 return response.json();
             } else {
                 alert('error', `${response.status}: ${response.statusText}`)
@@ -77,15 +102,13 @@ class Toggole extends Component {
             console.dir(error)
         })
 
-    }
+   }
 
     send = () => {
         this.sendOrder()
-    
         this.btmNext();
-        this.setState({
-            finishLable: true,
-        })
+        this.props.toggleStatus()
+        
     }
 
     handleOrder = (newValues) => {
@@ -102,32 +125,31 @@ class Toggole extends Component {
         for (let elem in this.state.values) {
             this.state.values[elem] === true && results.push(elem)     
         }
-        // this.setState({
-        //     totalNames: results,
-        // }) 
+
+        return results;
     }
 
-    totalCost = () => {
+    totalCost = (totalOreder) => {
         let preCost = 0
-        this.state.totalNames.map((arg) => {
-             questions.map((arg2) =>{
-                arg2.answers.map((arg3) => {
+        totalOreder.forEach((arg) => {
+            this.state.questions.forEach((arg2) =>{
+                arg2.answers.forEach((arg3) => {
                     if (arg === arg3.name){
                         preCost = preCost + +arg3.price
                     }
                 })
              })
         })
-        console.log(preCost.toFixed(2))
-        // this.setState({
-        //     finalCost: preCostto.Fixed(2),
-        // })
+        return preCost.toFixed(2)
     }
 
     render() {
-        console.log(this.state);
+        if (this.state.questions.length === 0) {
+            return null
+        }
+        console.log(this.state)
         let propIndex = this.state.currentIndex
-        let currentQuestion = questions[propIndex];
+        let currentQuestion = this.state.questions[propIndex];
 
         const answers = currentQuestion.answers;           
         const title = currentQuestion.question;
@@ -137,44 +159,48 @@ class Toggole extends Component {
         let btnPrev = null; 
         let btnSend = null; 
         let btnNext = null;
+        let finishLable = null;
 
-        propIndex === 0 || propIndex < questions.length - 2 ?
+        propIndex === 0 || propIndex < this.state.questions.length - 2 ?
             btnNext = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="next" onClick={this.btmNext}>Next</button>
             : btnNext = null
 
-            propIndex > 0 && propIndex < questions.length - 2 ?
+            propIndex > 0 && propIndex < this.state.questions.length - 2 ?
             btnPrev = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="prev" onClick={this.btmPrev}>Prev</button>
             : btnPrev = null
         
-        if (propIndex === questions.length - 2) {
+
+
+        let totalOreder = [];
+        let totalCost = null;
+
+        if (propIndex === this.state.questions.length - 2) {
             phone = true;
+            totalOreder = this.checkOrder();
+            totalCost = this.totalCost(totalOreder);
             btnSend = <button type="button" className="btn btn-primary sendBtn" id="send" onClick={this.send}>Send</button>
         }
         
-        if (propIndex === questions.length - 1) {
+        if (propIndex === this.state.questions.length - 1) {
             phone = null;
             btnSend = null;
+            finishLable = true;
         }
 
         const renderQuestions = propIndex >= 0 
-            && propIndex <= questions.length 
+            && propIndex <= this.state.questions.length 
             && <QuestionBlock 
                     currentQuestion={currentQuestion} 
-                    phone={phone} 
-                    finishLable={this.state.finishLable} 
-                    toggleStatus={this.props.toggleStatus}
                     type={type}
                     handleOrder={this.handleOrder}
-                    checkPhone={this.checkPhone}
                     values={this.state.values}
                     checkOrder={this.checkOrder}
-                    totalNames={this.state.totalNames}
                     totalCost={this.totalCost}
-                    finalCost={this.state.finalCost}
                     /> 
-                    
+        
+        console.log()
         return (
-            <div className="modal d-block" tabindex="-1" role="dialog" id="modal-block" >
+            <div className="modal d-block" tabIndex="-1" role="dialog" id="modal-block" >
                 <div className="modal-dialog  modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -191,7 +217,11 @@ class Toggole extends Component {
                         </div>                  
                        
                         {renderQuestions}
-
+                        {phone && <Phone 
+                            phone={phone} 
+                            checkPhone={this.checkPhone}
+                            /> }
+                        {finishLable && <FinalBlock />}
                         <div className="modal-footer" id="modalFooter">
                             {btnPrev}
                             {btnNext}

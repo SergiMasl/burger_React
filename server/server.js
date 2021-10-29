@@ -1,6 +1,9 @@
 var fs = require('fs');
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
+const express = require ('express');
+const app = express();
+const cors = require('cors');
 
 //const nanoid = nanolib.nanoid;
 
@@ -19,10 +22,20 @@ app.post('/', jsonParser, async(req, res) => {
     return res.status(200).json({ message: 'success' });
 })
 
+function getQuestions() {
+    let rawdata = fs.readFileSync('questions.json')
+    return JSON.parse(rawdata);
+}
+
+app.get("/", (req, res) => {
+    res.json(getQuestions())
+})
 
 
 
 
-server.listen(5000, '127.0.0.1')
 
-//npm install express
+app.listen(5000, () => {
+    console.log(`Example app listening at http://localhost:5000}`)
+})
+

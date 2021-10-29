@@ -27,24 +27,6 @@ function QuestionBlock( props ) {
 
     }
 
-    let phoneBlock = null;
-    let finishBlock = null;
-    
-    if (props.phone ) {    
-        props.checkOrder()
-        props.totalCost()
-    phoneBlock = 
-        <div> 
-            <lable for='numberPhone'>Enter yor phone</lable>
-            <input type="number" class='phone-input' onChange={(e)=> props.checkPhone(e.target.value)}/>    
-            <div className="totalOrder">
-                <span>Your order:</span>
-                {props.totalNames.map((arg) => <p>{arg}</p>)} 
-                <span>Total: $ {props.finalCost}</span>
-            </div>
-        </div> 
-    }
-
     let result = props.currentQuestion.answers.map((arg) => {
        // console.log(this.props.value)
         return(
@@ -55,9 +37,10 @@ function QuestionBlock( props ) {
                     className='d-none' 
                     checked={props.values[arg.name]} 
                     id={arg.title} 
+                    value={props.values[arg.name]} 
                     onChange={ (e) => {onChange(arg.name, e.target.checked, props.currentQuestion.type)} }/>
-                <label htmlFor={arg.title} class="d-flex flex-column justify-content-between">
-                    <img class="answerImg" src={arg.url} alt="burger" />
+                <label htmlFor={arg.title} className="d-flex flex-column justify-content-between">
+                    <img className="answerImg" src={arg.url} alt="burger" />
                     <span>{arg.title}</span>
                     <span>{arg.price}</span>
                 </label>
@@ -65,24 +48,13 @@ function QuestionBlock( props ) {
         )
     })
 
-    if (props.finishLable) {
-        phoneBlock = null
-        result = null
-        finishBlock = <p>"Thank You! We will contact you."</p>
-        
-        props.toggleStatus()
-        
-    } 
-
     return (
         <div className="modal-body  d-flex flex-column align-items-center" id="modalBody">
             <h5 className="question p-1 p-sm-2 p-md-3 text-center" id="question">{props.title}</h5>
             <div className="answers w-100 p-1 p-sm-2 p-md-3" id="answers">
                 
-                <form action="#" id="formAnswers" class="formAnswers d-flex flex-wrap justify-content-around">
+                <form action="#" id="formAnswers" className="formAnswers d-flex flex-wrap justify-content-around">
                     { result }
-                    { phoneBlock }
-                    { finishBlock }
                 </form>
             </div>
         </div>
