@@ -13,7 +13,8 @@
             "price": "2.99"
         }
     ],
-    "type": "radio"
+    "type": "radio",
+    "component": "question"
 },
 {
     "question": "What meat is the cutlet made from?",
@@ -36,7 +37,8 @@
             "price": "3.99"
         }
     ],
-    "type": "radio"
+    "type": "radio",
+    "component": "question"
 },
 {
     "question": "Additional ingredients?",
@@ -65,7 +67,8 @@
             "price": "0.99"
         }
     ],
-    "type": "checkbox"
+    "type": "checkbox",
+    "component": "question"
 },
 {
     "question": "Add sauce?",
@@ -88,15 +91,20 @@
             "price": "0.99"
         }
     ],
-    "type": "radio"
+    "type": "radio",
+    "component": "question"
 },
 {
     "question": "Phone?",
     "answers": [],
-    "comment": ["This is last obj, If you need more questions, add it upper"]
+    "comment": ["This is last obj, If you need more questions, add it upper"],
+    "component": "phone"
 },
+
 {
     "question": "",
-    "answers": []
+    "answers": [],
+    "title": "Thank You! We will contact you.",
+    "component": "final"
 }
 ]
