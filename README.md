@@ -1,3 +1,7 @@
+## Burger Quize - React
+
+##[link to Demo](https://sergimasl.github.io/burger_React/)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -9,3 +13,5 @@ In the project directory, you can run:
 ### `npm start`
 
 # burger_React
+
+## Project bases on ReactJS & NodeJS
