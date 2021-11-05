@@ -41,6 +41,7 @@ class Popup extends Component {
             this.setState({
                 questions: data,
                 isLoading: false,
+                values: valuesForState,
             })
         
         })
