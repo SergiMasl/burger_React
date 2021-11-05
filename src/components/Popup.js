@@ -38,9 +38,11 @@ class Popup extends Component {
                     valuesForState[arg.name] = false
                 })    
             })
-            // this.setState({
-            //     isLoading: false,
-            // })
+            this.setState({
+                questions: data,
+                isLoading: false,
+            })
+        
         })
         .catch((error)=> {
             console.dir(error)
