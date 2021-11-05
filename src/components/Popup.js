@@ -2,20 +2,17 @@ import React, { Component } from 'react';
 import QuestionBlock from './QuestionBlock.js';
 import Phone from './Phone.js'
 import FinalBlock from './FinalBlock.js'
+import Loader from './Loader.js'
 
-
-
-class Toggole extends Component {
+class Popup extends Component {
     constructor() {
         super();
         this.state = {
             questions: [],
-            status: false,
-            finalAnswers: [],
             currentIndex: 0,
-            title: '',
             phone: '',
             values: {},
+            isLoading: true
         }
     }  
     
@@ -41,13 +38,15 @@ class Toggole extends Component {
                     valuesForState[arg.name] = false
                 })    
             })
-            this.setState({
-                questions: data,
-                values: valuesForState,
-            })
+            // this.setState({
+            //     isLoading: false,
+            // })
         })
         .catch((error)=> {
             console.dir(error)
+            this.setState({
+                isLoading: false,
+            })
             alert('error', error)
         })
         
@@ -77,10 +76,10 @@ class Toggole extends Component {
 
     sendOrder = () => {
         const order = [];
-        const ingr = this.checkOrder()
+        const ingr = this.getOrder()
         order.push({client: [this.state.phone]}, 
             {ingredients: ingr}, 
-            {cost: this.totalCost(ingr)},
+            {cost: this.getCostOfOrder(ingr)},
         );
 
         fetch("http://localhost:5000/", {
@@ -99,6 +98,7 @@ class Toggole extends Component {
             }
         })
         .catch(error => {
+
             console.dir(error)
         })
 
@@ -107,7 +107,7 @@ class Toggole extends Component {
     send = () => {
         this.sendOrder()
         this.btmNext();
-        this.props.toggleStatus()
+        this.props.onSubmit()
         
     }
 
@@ -120,7 +120,7 @@ class Toggole extends Component {
         })
     }
 
-    checkOrder = () => {
+    getOrder = () => {
         let results = []
         for (let elem in this.state.values) {
             this.state.values[elem] === true && results.push(elem)     
@@ -129,7 +129,7 @@ class Toggole extends Component {
         return results;
     }
 
-    totalCost = (totalOreder) => {
+    getCostOfOrder = (totalOreder) => {
         let preCost = 0
         totalOreder.forEach((arg) => {
             this.state.questions.forEach((arg2) =>{
@@ -144,61 +144,21 @@ class Toggole extends Component {
     }
 
     render() {
-        if (this.state.questions.length === 0) {
-            return null
+        if (this.state.isLoading) {
+            return <Loader />
         }
-        console.log(this.state)
-        let propIndex = this.state.currentIndex
-        let currentQuestion = this.state.questions[propIndex];
-
-        const answers = currentQuestion.answers;           
-        const title = currentQuestion.question;
-        let type = currentQuestion.type;
-
-        let phone = false;
-        let btnPrev = null; 
-        let btnSend = null; 
-        let btnNext = null;
-        let finishLable = null;
-
-        propIndex === 0 || propIndex < this.state.questions.length - 2 ?
-            btnNext = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="next" onClick={this.btmNext}>Next</button>
-            : btnNext = null
-
-            propIndex > 0 && propIndex < this.state.questions.length - 2 ?
-            btnPrev = <button type="button" className="btn btn-secondary" data-dismiss="modal" id="prev" onClick={this.btmPrev}>Prev</button>
-            : btnPrev = null
         
-
-
+        const {currentIndex} = this.state
+        let currentQuestion = this.state.questions[currentIndex];
+   
         let totalOreder = [];
-        let totalCost = null;
-
-        if (propIndex === this.state.questions.length - 2) {
-            phone = true;
-            totalOreder = this.checkOrder();
-            totalCost = this.totalCost(totalOreder);
-            btnSend = <button type="button" className="btn btn-primary sendBtn" id="send" onClick={this.send}>Send</button>
-        }
+        let totalCost = 0;
         
-        if (propIndex === this.state.questions.length - 1) {
-            phone = null;
-            btnSend = null;
-            finishLable = true;
+        if (currentIndex === this.state.questions.length - 2) {
+            totalOreder = this.getOrder();
+            totalCost = this.getCostOfOrder(totalOreder);        
         }
 
-        const renderQuestions = propIndex >= 0 
-            && propIndex <= this.state.questions.length 
-            && <QuestionBlock 
-                    currentQuestion={currentQuestion} 
-                    type={type}
-                    handleOrder={this.handleOrder}
-                    values={this.state.values}
-                    checkOrder={this.checkOrder}
-                    totalCost={this.totalCost}
-                    /> 
-        
-        console.log()
         return (
             <div className="modal d-block" tabIndex="-1" role="dialog" id="modal-block" >
                 <div className="modal-dialog  modal-dialog-centered" role="document">
@@ -216,16 +176,32 @@ class Toggole extends Component {
                             </button>
                         </div>                  
                        
-                        {renderQuestions}
-                        {phone && <Phone 
-                            phone={phone} 
-                            checkPhone={this.checkPhone}
-                            /> }
-                        {finishLable && <FinalBlock />}
+                        {currentQuestion.component === "question"
+                            && <QuestionBlock 
+                                    currentQuestion={currentQuestion} 
+                                    handleOrder={this.handleOrder}
+                                    values={this.state.values}
+                        /> }
+
+                        {currentQuestion.component === "phone"
+                            && <Phone 
+                                totalOreder={totalOreder} 
+                                checkPhone={this.checkPhone}
+                                totalCost={totalCost}
+                             /> 
+                        }
+                        {currentQuestion.component === "final" && <FinalBlock title={currentQuestion.title}/> }
+                          
                         <div className="modal-footer" id="modalFooter">
-                            {btnPrev}
-                            {btnNext}
-                            {btnSend}
+                            {(currentIndex > 0 && currentIndex < this.state.questions.length - 2 )
+                                && <button type="button" className="btn btn-secondary" data-dismiss="modal" id="prev" onClick={this.btmPrev}>Prev</button>
+                            }
+                            {(currentIndex === 0 || currentIndex < this.state.questions.length - 2 )
+                                && <button type="button" className="btn btn-secondary" data-dismiss="modal" id="next" onClick={this.btmNext}>Next</button>
+                            }
+                            {(currentQuestion.component === "phone") 
+                                && <button type="button" className="btn btn-primary sendBtn" id="send" onClick={this.send}>Send</button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -234,4 +210,4 @@ class Toggole extends Component {
     }
 }
 
-export default Toggole
+export default Popup

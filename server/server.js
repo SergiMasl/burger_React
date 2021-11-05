@@ -29,7 +29,7 @@ function getQuestions() {
 
 app.get("/", (req, res) => {
     setTimeout(()=> {res.json(getQuestions())}, 2000)
-    
+    getQuestions()
 })
 
 

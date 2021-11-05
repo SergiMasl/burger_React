@@ -1,28 +1,26 @@
 import React, { Component } from 'react';
 import MainInner from './MainInner.js'
-import Toggole from './Toggole.js'
+import Popup from './Popup.js'
 
 
 class Main extends Component {
     constructor() {
         super();
         this.state = {
-            status: false,
+            isOpen: false,
         }
     }
 
     toggle = (arg) => {
-        arg ? this.setState({
-            status: true,
-        }) : this.setState({
-            status: false,
-        }) 
+        this.setState({
+            isOpen: arg,
+        })
     }
 
-    toggleStatus = () => {
+    onSubmit = () => {
         setTimeout(() => {
             this.setState({
-                status: false,
+                isOpen: false,
             })
         }, 2000)
     }
@@ -33,7 +31,7 @@ class Main extends Component {
         return (
             <div>
                 <MainInner toggle={this.toggle}/>
-                { this.state.status && <Toggole toggle={this.toggle} toggleStatus={this.toggleStatus}/> }          
+                { this.state.isOpen && <Popup toggle={this.toggle} onSubmit={this.onSubmit}/> }          
             </div>
         )
     }
