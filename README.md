@@ -1,6 +1,7 @@
 ## Burger Quize - React
 
-##[link to Demo](https://sergimasl.github.io/burger-quiz-JS/)
+##[link to Demo](https://sergimasl.github.io/burger-quiz-JS/)  
+#Demo is an old version
 
 # Getting Started with Create React App
 
